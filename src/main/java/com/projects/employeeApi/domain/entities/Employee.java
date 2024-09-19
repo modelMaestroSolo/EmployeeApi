@@ -1,6 +1,7 @@
 package com.projects.employeeApi.domain.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,8 @@ public class Employee {
     Long id;
     String name;
     String email;
+
+    @JsonIgnore
     String password;
     Timestamp createdAt;
     Timestamp updatedAt;

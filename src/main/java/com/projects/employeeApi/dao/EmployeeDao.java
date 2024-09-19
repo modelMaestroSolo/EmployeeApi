@@ -1,7 +1,6 @@
 package com.projects.employeeApi.dao;
 
 import com.projects.employeeApi.domain.entities.Employee;
-import org.postgresql.util.PSQLException;
 import org.springframework.jdbc.support.KeyHolder;
 
 import java.util.List;
@@ -17,7 +16,6 @@ public interface EmployeeDao {
 
     int deleteEmployeeById(Long id);
 
-    Integer existsByEmail(Employee employee);
+    Boolean doesEmployeeExistByEmail(Employee employee);
 
-    Integer existsById(Long id);
 }

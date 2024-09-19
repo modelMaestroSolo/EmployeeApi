@@ -19,10 +19,10 @@ public class EmployeeDaoImpl implements EmployeeDao {
         this.template = template;
     }
 
-    public Integer existsByEmail(Employee employee){
+    public Boolean doesEmployeeExistByEmail(Employee employee){
         //check if email already exists
         String checkEmailSql = "select count(*) from employees where email = ?";
-        return template.queryForObject(checkEmailSql, Integer.class, employee.getEmail());
+        return template.queryForObject(checkEmailSql, Boolean.class, employee.getEmail());
     }
 
     public Integer existsById(Long id){
@@ -62,7 +62,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 employee.setId(rs.getLong("id"));
                 employee.setName(rs.getString("name"));
                 employee.setEmail(rs.getString("email"));
-                // employee.setPassword(rs.getString("password")); don't return password
                 employee.setCreatedAt(rs.getTimestamp("created_at"));
                 employee.setUpdatedAt(rs.getTimestamp("updated_at"));
                 return employee;
@@ -81,7 +80,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 employee.setId(rs.getLong("id"));
                 employee.setName(rs.getString("name"));
                 employee.setEmail(rs.getString("email"));
-               // employee.setPassword(rs.getString("password")); don't return password
                 employee.setCreatedAt(rs.getTimestamp("created_at"));
                 employee.setUpdatedAt(rs.getTimestamp("updated_at"));
                 return employee;

@@ -1,5 +1,6 @@
 package com.projects.employeeApi.services.Impl;
 
+import com.projects.employeeApi.domain.dtos.EmployeeInputDto;
 import com.projects.employeeApi.domain.entities.Employee;
 import com.projects.employeeApi.dao.EmployeeDao;
 import com.projects.employeeApi.exceptions.DatabaseError;
@@ -7,7 +8,6 @@ import com.projects.employeeApi.exceptions.EmailAlreadyExistsException;
 import com.projects.employeeApi.exceptions.EmployeeNotFoundException;
 import com.projects.employeeApi.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
@@ -25,9 +25,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee create(Employee employee) {
-        Integer count = employeeDao.existsByEmail(employee);
-        if(count != null && count > 0) {
+    public Employee create(EmployeeInputDto employeeInputDto) {
+        Employee employee = Employee.builder()
+                .name(employeeInputDto.getName())
+                .email(employeeInputDto.getEmail())
+                .password(employeeInputDto.getPassword())
+                .build();
+        Boolean employeeExists = employeeDao.doesEmployeeExistByEmail(employee);
+        if(employeeExists) {
             throw new EmailAlreadyExistsException("The Email provided is already associated with an employee!");
         }
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -43,7 +48,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void update(Long id, Employee employee) {
+    public void update(Long id, EmployeeInputDto employeeInputDto) {
+        Employee employee = Employee.builder()
+                .name(employeeInputDto.getName())
+                .email(employeeInputDto.getEmail())
+                .password(employeeInputDto.getPassword())
+                .build();
         int rowsAffected = employeeDao.update(id, employee);
         if(rowsAffected == 0){
             throw new EmployeeNotFoundException("Employee doesn't with id " + id + " doesn't exist");
@@ -52,10 +62,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee readOneEmployee(Long id) {
-        Integer count = employeeDao.existsById(id);
-        if(count != null && count == 0) {
-            throw new EmployeeNotFoundException("Invalid Employee Id!");
-        }
         return employeeDao.fetchOneEmployee(id);
     }
 

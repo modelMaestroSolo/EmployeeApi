@@ -1,5 +1,6 @@
 package com.projects.employeeApi.controllers;
 
+import com.projects.employeeApi.domain.dtos.EmployeeInputDto;
 import com.projects.employeeApi.domain.entities.Employee;
 import com.projects.employeeApi.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,12 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<Employee> createEmployee(@RequestBody EmployeeInputDto employee) {
             return new ResponseEntity<>(employeeService.create(employee), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateEmployee(@PathVariable("id") Long id, @RequestBody Employee employee) {
+    public ResponseEntity<String> updateEmployee(@PathVariable("id") Long id, @RequestBody EmployeeInputDto employee) {
         employeeService.update(id, employee);
         return ResponseEntity.ok("Employee successfully updated!");
     }
