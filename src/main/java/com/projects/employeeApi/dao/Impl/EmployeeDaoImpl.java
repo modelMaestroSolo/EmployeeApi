@@ -24,13 +24,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         String checkEmailSql = "select count(*) from employees where email = ?";
         return template.queryForObject(checkEmailSql, Boolean.class, employee.getEmail());
     }
-
-    public Integer existsById(Long id){
-        //check if id already exists
-        String checkEmailSql = "select count(*) from employees where id = ?";
-        return template.queryForObject(checkEmailSql, Integer.class, id);
-    }
-
+    
     @Override
     public KeyHolder create(Employee employee, KeyHolder keyHolder) {
 
