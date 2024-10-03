@@ -6,6 +6,7 @@ import com.projects.employeeApi.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+  //  @PreAuthorize("hasRole('ADMIN')") //used to check a  condition before executing this method
     @PostMapping
     public ResponseEntity<Employee> createEmployee(@RequestBody EmployeeInputDto employee) {
             return new ResponseEntity<>(employeeService.create(employee), HttpStatus.CREATED);
@@ -36,6 +38,7 @@ public class EmployeeController {
         return employeeService.readOneEmployee(id);
     }
 
+   // @PreAuthorize("hasRole('ADMIN')") method level authorization
     @GetMapping("/all-employees")
     public List<Employee> getAllEmployees() {
         return employeeService.fetchAllEmployees();
